@@ -1,6 +1,7 @@
 package com.vasquez.fernandez.jordan.appvehiculos.adapter;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.ViewHo
 
     private Context context;
     private ArrayList<Vehiculo> listaVehiculosAux;
+    public int posVehiculoSeleccionadoRv;
 
     public VehiculoAdapter(Context context) {
         this.context = context;
@@ -49,6 +51,7 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.ViewHo
             //Mostrar la foto real grabada en la base de datos
             holder.imgVehiculo.setImageBitmap(Helper.base64ToImage(vehiculo.getFoto()));
         }
+
     }
 
     @Override
@@ -56,7 +59,7 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.ViewHo
         return listaVehiculosAux.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnLongClickListener {
         //Declarar los controles del cardview
         ImageView imgVehiculo;
         TextView txtMotor,txtChasis,txtColor,txtMarcaTipoModelo,txtPrecioDescuento;
@@ -69,7 +72,21 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.ViewHo
             txtMarcaTipoModelo = itemView.findViewById(R.id.txt_carro_marca_modelo);
             txtColor = itemView.findViewById(R.id.txt_carro_color);
             txtPrecioDescuento = itemView.findViewById(R.id.txt_carro_precio_descuento);
+            itemView.setOnCreateContextMenuListener(this);
+            itemView.setOnLongClickListener(this);
+        }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.setHeaderTitle("Vehiculo");
+            contextMenu.add(0,1,0,"Eliminar");
+            contextMenu.add(0,2,0,"Actualizar");
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            posVehiculoSeleccionadoRv = getAdapterPosition();
+            return false;
         }
     }
 

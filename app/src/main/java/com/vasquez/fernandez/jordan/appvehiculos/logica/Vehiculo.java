@@ -138,7 +138,7 @@ public class Vehiculo extends Conexion {
             vehiculo.setColor(cursor.getString(2));
             vehiculo.setPrecio(cursor.getDouble(3));
             vehiculo.setMontoDescuento(cursor.getDouble(4));
-            vehiculo.setFoto(null);
+            vehiculo.setFoto(cursor.getString(5));
             vehiculo.setMarcaId(cursor.getInt(6));
             vehiculo.setModeloId(cursor.getInt(7));
             vehiculo.setTipoId(cursor.getInt(8));
@@ -165,6 +165,18 @@ public class Vehiculo extends Conexion {
         registro.put("modelo_id",this.getModeloId());
         registro.put("tipo_id",this.getModeloId());
         return db.insert("vehiculos",null,registro);
+    }
+
+    public long eliminar(){
+        long r = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            r = db.delete("vehiculos","numero_chasis = ?",new String[]{this.getNumeroChasis()});
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return  r;
     }
 
     public boolean verificarNumeroChasis(String numeroChasis){
